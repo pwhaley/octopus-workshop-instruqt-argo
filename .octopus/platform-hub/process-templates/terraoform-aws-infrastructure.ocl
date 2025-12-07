@@ -53,6 +53,7 @@ step "apply-a-terraform-template" {
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.GoogleCloud.ImpersonateServiceAccount = "False"
             Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
+            Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptSource = "GitRepository"
             Octopus.Action.Terraform.AllowPluginDownloads = "True"
             Octopus.Action.Terraform.AzureAccount = "False"
@@ -63,6 +64,11 @@ step "apply-a-terraform-template" {
             Octopus.Action.Terraform.TemplateDirectory = "#{parameter.template.directory}"
         }
         worker_pool_variable = "#{parameter.worker.pool}"
+
+        container {
+            feed = "#{parameter.container.feed}"
+            image = "octopusdeploy/worker-tools:6.5.0-ubuntu.22.04"
+        }
 
         git_dependencies {
             default_branch = "main"

@@ -331,6 +331,7 @@ step "flyway-database-migrations-dryrun" {
             Flyway.Command.Value = "check dry run"
             Flyway.Database.User = "#{parameter.database.user}"
             Flyway.Database.User.Password = "#{parameter.database.password}"
+            Flyway.Email.Address = "mark.harrison@octopus.com"
             Flyway.Package.Value = "parameter.database.package"
             Flyway.PersonalAccessToken = "#{paramater.flyway.pat}"
             Flyway.Target.Url = "jdbc:sqlserver://#{parameter.database.host}:1433;databaseName=#{parameter.database.name};encrypt=false;trustServerCertificate=true;"

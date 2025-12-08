@@ -6,8 +6,6 @@ on:
 jobs:
   package-db:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # REQUIRED for creating releases
 
     env:
       PACKAGE_NAME: database
@@ -24,29 +22,36 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Zip src/Database folder
+      # ------------------------------
+      # Create database ZIP package
+      # ------------------------------
+      - name: Zip src/Database directory
         run: |
           mkdir -p build
           zip -r build/${PACKAGE_NAME}-${VERSION}.zip src/Database
 
       # ------------------------------
-      # Create GitHub Release instead of OCI push
+      # Push package to Octopus Deploy
       # ------------------------------
-
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
+      - name: Push Database Package to Octopus Deploy
+        uses: OctopusDeploy/push-package-action@v3.0.4
         with:
-          tag_name: ${{ env.VERSION }}
-          name: "Database Package ${{ env.VERSION }}"
-          body: |
-            Automated release for database package version **${{ env.VERSION }}**.
-          files: |
+          packages: |
             build/${{ env.PACKAGE_NAME }}-${{ env.VERSION }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          api_key: ${{ secrets.OCTOPUS_API_KEY }}
+          server: ${{ secrets.OCTOPUS_URL }}
+          space: ${{ secrets.OCTOPUS_SPACE_ID }}
+          overwrite_mode: OverwriteExisting
 
-      - name: Output release info
-        run: |
-          echo "Release created:"
-          echo "${{ steps.create_release.outputs.release_url }}"
+      # ------------------------------
+      # Push Build Information to Octopus Deploy
+      # ------------------------------
+      - name: Push Build Information to Octopus Deploy
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+          packages: |
+            ${{ env.PACKAGE_NAME }}
+          version: ${{ env.VERSION }}
+          api_key: ${{ secrets.OCTOPUS_API_KEY }}
+          server: ${{ secrets.OCTOPUS_URL }}
+          space: ${{ secrets.OCTOPUS_SPACE_ID }}

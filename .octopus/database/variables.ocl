@@ -1,7 +1,9 @@
-variable "AWS.Account" {
-    value "AWS Demo Account" {}
-}
-
 variable "Flyway.PAT" {
     value "2-TXzmkOmjhxqW0D2uCYoC1_YjZ-lyGYpPiFbd632ZlcTJCHQihD9-cAtzWmsrb8lx3W2ufyRvgLIQaXfyBoL9pw" {}
+}
+
+variable "AWS.Account" {
+    type = "AmazonWebServicesAccount"
+
+    value "aws-demo-account" {}
 }

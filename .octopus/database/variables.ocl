@@ -1,0 +1,3 @@
+variable "AWS.Account" {
+    value "AWS Demo Account" {}
+}

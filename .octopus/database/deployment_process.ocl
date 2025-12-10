@@ -1,0 +1,38 @@
+process_template "run-a-process-template" {
+    name = "Run a Process Template"
+    process_template_slug = "flyway-database-migration"
+    version_mask = "3.X"
+
+    package_parameter "parameter.database.package" {
+        feed = "octopus-server-built-in"
+        package_id = "adamoctoclose/octopus-workshop-instruqt-argo"
+    }
+
+    parameter "parameter.worker.pool" {
+        value = "WorkerPools-122"
+    }
+
+    parameter "parameter.database.name" {
+        value = "#{SQLServer.Database.Name}"
+    }
+
+    parameter "parameter.database.user" {
+        value = "#{SQLServer.Database.UserName}"
+    }
+
+    parameter "parameter.database.host" {
+        value = "#{SQLServer.Database.Host}"
+    }
+
+    parameter "parameter.container.feed" {
+        value = "Feeds-1127"
+    }
+
+    parameter "paramater.review.environement" {
+        value = "Environments-105"
+    }
+
+    parameter "parameter.database.password" {
+        value = "#{SQLServer.Database.Password}"
+    }
+}

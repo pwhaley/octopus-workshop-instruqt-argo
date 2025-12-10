@@ -35,4 +35,8 @@ process_template "run-a-process-template" {
     parameter "parameter.database.password" {
         value = "#{SQLServer.Database.Password}"
     }
+
+    parameter "paramater.flyway.pat" {
+        value = "#{Flyway.PAT}"
+    }
 }

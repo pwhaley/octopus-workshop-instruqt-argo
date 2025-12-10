@@ -3,5 +3,8 @@ connectivity_policy {
 }
 
 versioning_strategy {
-    template = "#{Octopus.Version.LastMajor}.#{Octopus.Version.LastMinor}.#{Octopus.Version.NextPatch}"
+    donor_package {
+        package = "flyway-package-value"
+        step = "run-a-process-template-flyway-database-migrations"
+    }
 }
